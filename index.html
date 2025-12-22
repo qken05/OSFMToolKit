@@ -1,0 +1,149 @@
+<!-- index.html (FULL) — uses .previewViewport for its own scrollbar -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SFM APB Generator</title>
+  <script type="module" crossorigin src="./assets/index-BNcZcpfe.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CXbyHeMy.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">SFM APB Generator
+      <span class="credit">by qken</span>
+    </div>
+    <div class="actions">
+      <button id="btnClear" class="btn">New APB</button>
+      <button id="btnDownload" class="btn btn-primary">Download PNG</button>
+    </div>
+  </header>
+
+  <div class="mobileTabs">
+    <button class="tabBtn is-active" data-tab="inputs">Inputs</button>
+    <button class="tabBtn" data-tab="preview">Preview</button>
+  </div>
+
+  <main class="grid">
+    <section class="panel" id="panelInputs">
+      <h2 style="margin-bottom:12px;">Inputs</h2>
+
+      <div class="field">
+        <label>Mugshot</label>
+        <input id="mugshot" type="file" accept="image/*" />
+        <div class="hint">Upload a mugshot; it will be auto-cropped to fit.</div>
+      </div>
+
+      <div class="field">
+        <label>Mugshot URL (direct image link)</label>
+        <div class="row2">
+          <input id="mugshotUrl" type="url" placeholder="https://i.imgur.com/xxxxxx.jpg" />
+          <button id="btnLoadMugshotUrl" class="btn" type="button">Load URL</button>
+        </div>
+        <div class="hint">Must be a direct .png/.jpg/.jpeg/.webp link.</div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Header (yellow bar)</label>
+          <input id="headerText" type="text" placeholder="Wanted for Questioning" />
+        </div>
+        <div class="field">
+          <label>Name</label>
+          <input id="name" type="text" placeholder="Firstname Lastname" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Description</label>
+        <textarea id="description" rows="5" placeholder="..."></textarea>
+        <div class="hint">
+          <span id="countDescription" class="counter">0 / 0 lines</span>
+          <span class="dot">•</span>
+          Stops when max display is reached.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Clothing</label>
+        <textarea id="clothing" rows="5" placeholder="..."></textarea>
+        <div class="hint">
+          <span id="countClothing" class="counter">0 / 0 lines</span>
+          <span class="dot">•</span>
+          Stops when max display is reached.
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="notes" rows="5" placeholder="..."></textarea>
+        <div class="hint">
+          <span id="countNotes" class="counter">0 / 0 lines</span>
+          <span class="dot">•</span>
+          Stops when max display is reached.
+        </div>
+      </div>
+
+      <div class="row3">
+        <div class="field">
+          <label>Date/Time</label>
+          <input id="dateTime" type="text" placeholder="DD/MMM/YYYY at HH:MM" />
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input id="location" type="text" placeholder="Street Name" />
+        </div>
+        <div class="field">
+          <label>Report #</label>
+          <input id="reportNo" type="text" placeholder="#CAXXX" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Summary paragraph</label>
+        <textarea id="summary" rows="6" placeholder="..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Contact line</label>
+        <input id="contactLine" type="text" placeholder="Contact Deputy Fire Marshal Firstname Lastname at: address@fire.sa.gov" />
+      </div>
+
+      <div class="row3">
+        <div class="field">
+          <label>Prepared by</label>
+          <input id="preparedBy" type="text" placeholder="DFM#XXXXXX" />
+        </div>
+        <div class="field">
+          <label>Footer date</label>
+          <input id="footerDate" type="text" placeholder="DD/MMM/YYYY" />
+        </div>
+        <div class="field">
+          <label>Footer report #</label>
+          <input id="footerReport" type="text" placeholder="XXXX" />
+        </div>
+      </div>
+    </section>
+
+    <section class="preview" id="panelPreview">
+      <div class="previewHead">
+        <h2>Preview</h2>
+        <div class="zoomWrap">
+          <span class="zoomLabelStatic">Zoom</span>
+          <input id="zoom" type="range" min="40" max="160" step="5" value="100" />
+          <span id="zoomLabel" class="zoomLabel">100%</span>
+        </div>
+      </div>
+
+      <!-- ✅ Separate scrollable viewport for the canvas -->
+      <div class="previewViewport" id="canvasWrap" aria-label="Preview viewport (scroll to pan)">
+        <div class="stage" id="stage">
+          <canvas id="canvas" width="1187" height="1593"></canvas>
+        </div>
+      </div>
+
+      <div class="hint">Use the zoom slider to put out the APB on your entire page or just scroll down.</div>
+    </section>
+  </main>
+</body>
+</html>
