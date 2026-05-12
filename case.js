@@ -678,6 +678,28 @@ function formatQuestionnaire() {
 [/divbox]`;
 }
 
+function formatCaseFile() {
+  const narrative = fallback(valueOf("narrative"), "TBA");
+  const conclusion = fallback(valueOf("conclusion"), "TBA");
+
+  return `[divbox=white][center] [fieldheader][/fieldheader][/center] [hr] [/hr]
+[divbox=#4D0000][center][b][color=#FFFFFF][size=150] Narrative[/size][/color][/b][/center] [/divbox][hr][/hr]
+${narrative}
+
+[hr][/hr]
+[divbox=#4D0000][center][b][color=#FFFFFF][size=150]Evidence [/size][/color][/b][/center] [/divbox][hr][/hr]
+${formatExhibits()}
+
+[hr][/hr]
+[divbox=#4D0000][center][b][color=#FFFFFF][size=150]PERSONS OF INTEREST[/size][/color][/b][/center] [/divbox][hr][/hr]
+${formatPersons()}
+
+[hr][/hr]
+[divbox=#4D0000][center][b][color=#FFFFFF][size=150]CONCLUSION [/size][/color][/b][/center] [/divbox][hr][/hr]
+${conclusion}
+[/divbox]`;
+}
+
 /* -----------------------------
    RENDER / COPY / DRAFT
 ----------------------------- */
@@ -770,6 +792,11 @@ function clearCase() {
     const input = document.getElementById(id);
     if (!input) return;
 
+    if (id === "conclusion") {
+      input.value = "TBA";
+    } else {
+      input.value = "";
+    }
   });
 
   if (exhibitList) exhibitList.innerHTML = "";
@@ -818,7 +845,14 @@ if (btnAddPerson) {
 
 if (btnClearCase) {
   btnClearCase.addEventListener("click", () => {
-    clearCase();
+    const confirmClear = confirm(
+      "Are you sure you want to clear this case? This will delete the saved draft."
+    );
+
+    if (confirmClear) {
+      clearCase();
+      saveDraft();
+    }
   });
 }
 
@@ -876,79 +910,84 @@ if (btnGenerateCaseFile) {
   });
 }
 
+/* -----------------------------
+   STARTUP
+----------------------------- */
+
+restoreDraft();
 renderAll();
+startGuidelinesPopup();
 
 /* -----------------------------
    GUIDELINES POPUP
 ----------------------------- */
 
-const guidelinesModal = document.getElementById("guidelinesModal");
-const closeGuidelinesBtn = document.getElementById("closeGuidelinesBtn");
-const guidelinesTimerText = document.getElementById("guidelinesTimerText");
+function startGuidelinesPopup() {
+  const guidelinesModal = document.getElementById("guidelinesModal");
+  const closeGuidelinesBtn = document.getElementById("closeGuidelinesBtn");
+  const guidelinesTimerText = document.getElementById("guidelinesTimerText");
 
-const GUIDELINES_KEY = `sfm_guidelines_seen_this_refresh_${caseType}`;
-
-let guidelinesSecondsLeft = 5;
-
-function getNavigationType() {
-  const navEntries = performance.getEntriesByType("navigation");
-
-  if (navEntries.length > 0) {
-    return navEntries[0].type;
-  }
-
-  return "navigate";
-}
-
-function openGuidelinesModal() {
-  if (!guidelinesModal) return;
-
-  guidelinesModal.classList.add("is-open");
-  guidelinesModal.setAttribute("aria-hidden", "false");
-}
-
-function closeGuidelinesModal() {
-  if (!guidelinesModal) return;
-
-  guidelinesModal.classList.remove("is-open");
-  guidelinesModal.setAttribute("aria-hidden", "true");
-
-  // Only remember it for this active tab/session.
-  sessionStorage.setItem(GUIDELINES_KEY, "true");
-}
-
-function startGuidelinesTimer() {
-  if (!guidelinesModal || !closeGuidelinesBtn || !guidelinesTimerText) return;
-
-  const navigationType = getNavigationType();
-  const alreadySeenThisSession = sessionStorage.getItem(GUIDELINES_KEY) === "true";
-
-  /*
-    Only hide guidelines on refresh.
-    If the page is opened normally again, show the guidelines again.
-  */
-  if (navigationType === "reload" && alreadySeenThisSession) {
-    guidelinesModal.classList.remove("is-open");
-    guidelinesModal.setAttribute("aria-hidden", "true");
+  if (!guidelinesModal || !closeGuidelinesBtn || !guidelinesTimerText) {
+    console.warn("Guidelines modal elements were not found.");
     return;
   }
 
+  const GUIDELINES_KEY = `sfm_guidelines_seen_this_tab_${caseType}`;
+
+  function getNavigationType() {
+    const entries = performance.getEntriesByType("navigation");
+
+    if (entries && entries.length > 0) {
+      return entries[0].type;
+    }
+
+    return "navigate";
+  }
+
+  function openGuidelinesModal() {
+    guidelinesModal.classList.add("is-open");
+    guidelinesModal.setAttribute("aria-hidden", "false");
+    guidelinesModal.style.display = "grid";
+  }
+
+  function closeGuidelinesModal() {
+    guidelinesModal.classList.remove("is-open");
+    guidelinesModal.setAttribute("aria-hidden", "true");
+    guidelinesModal.style.display = "none";
+
+    sessionStorage.setItem(GUIDELINES_KEY, "true");
+  }
+
+  const navigationType = getNavigationType();
+  const alreadySeenThisTab = sessionStorage.getItem(GUIDELINES_KEY) === "true";
+
+  /*
+    Refresh = do not show again.
+    Opening the page normally again = show again.
+  */
+  if (navigationType === "reload" && alreadySeenThisTab) {
+    guidelinesModal.classList.remove("is-open");
+    guidelinesModal.setAttribute("aria-hidden", "true");
+    guidelinesModal.style.display = "none";
+    return;
+  }
+
+  let secondsLeft = 5;
+
   openGuidelinesModal();
 
-  guidelinesSecondsLeft = 5;
-
   closeGuidelinesBtn.disabled = true;
-  closeGuidelinesBtn.textContent = `Continue in ${guidelinesSecondsLeft}`;
+  closeGuidelinesBtn.textContent = `Continue in ${secondsLeft}`;
   guidelinesTimerText.textContent =
-    `Please read the guidelines. You can continue in ${guidelinesSecondsLeft} seconds.`;
+    `Please read the guidelines. You can continue in ${secondsLeft} seconds.`;
 
   const timer = setInterval(() => {
-    guidelinesSecondsLeft -= 1;
+    secondsLeft -= 1;
 
-    if (guidelinesSecondsLeft > 0) {
-      closeGuidelinesBtn.textContent = `Continue in ${guidelinesSecondsLeft}`;
+    if (secondsLeft > 0) {
+      closeGuidelinesBtn.textContent = `Continue in ${secondsLeft}`;
       guidelinesTimerText.textContent =
-        `Please read the guidelines. You can continue in ${guidelinesSecondsLeft} seconds.`;
+        `Please read the guidelines. You can continue in ${secondsLeft} seconds.`;
     } else {
       clearInterval(timer);
 
@@ -958,14 +997,10 @@ function startGuidelinesTimer() {
         "You can now continue to the case builder.";
     }
   }, 1000);
-}
 
-if (closeGuidelinesBtn) {
   closeGuidelinesBtn.addEventListener("click", () => {
     if (!closeGuidelinesBtn.disabled) {
       closeGuidelinesModal();
     }
   });
 }
-
-startGuidelinesTimer();
