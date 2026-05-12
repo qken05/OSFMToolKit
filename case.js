@@ -46,7 +46,7 @@ const postCasefileBtn = document.getElementById("postCasefileBtn");
 ----------------------------- */
 
 if (caseType === "structure") {
-  if (caseTypeLabel) caseTypeLabel.textContent = "Fire Investigation Logs";
+  if (caseTypeLabel) caseTypeLabel.textContent = "Fire Investigation Format";
   if (caseBuilderTitle) caseBuilderTitle.textContent = "Fire Investigation Log";
   if (caseBuilderSubtitle) {
     caseBuilderSubtitle.textContent =
@@ -882,17 +882,23 @@ renderAll();
    GUIDELINES POPUP
 ----------------------------- */
 
-/* -----------------------------
-   GUIDELINES POPUP
------------------------------ */
-
 const guidelinesModal = document.getElementById("guidelinesModal");
 const closeGuidelinesBtn = document.getElementById("closeGuidelinesBtn");
 const guidelinesTimerText = document.getElementById("guidelinesTimerText");
 
-const GUIDELINES_KEY = `sfm_guidelines_seen_${caseType}`;
+const GUIDELINES_KEY = `sfm_guidelines_seen_this_refresh_${caseType}`;
 
 let guidelinesSecondsLeft = 5;
+
+function getNavigationType() {
+  const navEntries = performance.getEntriesByType("navigation");
+
+  if (navEntries.length > 0) {
+    return navEntries[0].type;
+  }
+
+  return "navigate";
+}
 
 function openGuidelinesModal() {
   if (!guidelinesModal) return;
@@ -907,21 +913,29 @@ function closeGuidelinesModal() {
   guidelinesModal.classList.remove("is-open");
   guidelinesModal.setAttribute("aria-hidden", "true");
 
+  // Only remember it for this active tab/session.
   sessionStorage.setItem(GUIDELINES_KEY, "true");
 }
 
 function startGuidelinesTimer() {
   if (!guidelinesModal || !closeGuidelinesBtn || !guidelinesTimerText) return;
 
-  const alreadySeen = sessionStorage.getItem(GUIDELINES_KEY) === "true";
+  const navigationType = getNavigationType();
+  const alreadySeenThisSession = sessionStorage.getItem(GUIDELINES_KEY) === "true";
 
-  if (alreadySeen) {
+  /*
+    Only hide guidelines on refresh.
+    If the page is opened normally again, show the guidelines again.
+  */
+  if (navigationType === "reload" && alreadySeenThisSession) {
     guidelinesModal.classList.remove("is-open");
     guidelinesModal.setAttribute("aria-hidden", "true");
     return;
   }
 
   openGuidelinesModal();
+
+  guidelinesSecondsLeft = 5;
 
   closeGuidelinesBtn.disabled = true;
   closeGuidelinesBtn.textContent = `Continue in ${guidelinesSecondsLeft}`;
