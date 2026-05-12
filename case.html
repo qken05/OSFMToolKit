@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SFM Case Builder</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="case-builder-page">
+
+  <img src="sanfire.png" alt="" class="home-logo-watermark" />
+
+  <!-- Guidelines Model -->
+<div id="guidelinesModal" class="guidelines-modal" aria-hidden="true">
+  <div class="guidelines-backdrop"></div>
+
+  <div class="guidelines-card">
+    <div class="guidelines-header">
+      <div>
+        <p class="hero-label">🔺Investigation Guidelines🔺</p>
+        <h2>Before You Start❗</h2>
+        <p>
+          Please read these guidelines before building the case file.
+        </p>
+      </div>
+    </div>
+
+    <div class="guidelines-content">
+      <p>
+       The case file system is divided into two parts: the case overview (Template 1) and the investigation report (Template 2). 
+       All Fire Marshals are expected to follow this structure to ensure consistency across all investigations.
+      </p>
+
+      <p>
+        The lead investigator is responsible for creating the main case file using Template 1. 
+        This serves as the primary post and must contain all base information about the incident, including date/time, location, assigned personnel, and the link to the associated forum topic.
+      </p>
+
+      <p>
+        The investigation report (Template 2) is to be posted as a secondary post within the same forum topic. 
+        This post contains the detailed narrative, evidence, persons of interest, and conclusion of the investigation.
+      </p>
+
+      <p>
+        Other Fire Marshals shall not edit the main case file post. Instead, they are to submit their findings, evidence, and observations in separate replies within the same topic. 
+        These contributions should follow the structure of Template 2 where applicable.
+      </p>
+      <p>
+        The lead investigator is responsible for reviewing all replies and ensuring that relevant findings are acknowledged and reflected in the investigation. 
+        If significant updates occur, an additional Template 2 post may be created to document new developments.
+      </p>
+      <p>
+      A case file must be created and completed within 48 hours of the incident. 
+      This ensures that all information remains accurate, complete, and that no relevant details are forgotten during the investigation process.
+
+      </p>  
+
+    </div>
+
+    <div class="guidelines-footer">
+      <p id="guidelinesTimerText">
+        Please read the guidelines. You can continue in 5 seconds.
+      </p>
+
+      <button id="closeGuidelinesBtn" class="btn btn-primary" type="button" disabled>
+        Continue in 5
+      </button>
+    </div>
+  </div>
+</div>
+
+  <header class="topbar app-topbar">
+    <div class="brand brand-with-logo">
+      <a href="index.html" class="logo-home-link" title="Back to Home">
+        <img src="sanfire.png" alt="San Fire Logo" class="topbar-logo" />
+      </a>
+
+      <div>
+        <span class="brand-main">SFM Case Builder</span>
+        <span id="caseTypeLabel" class="credit">Vehicle Fire Format</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a href="index.html" class="btn btn-home">← Home</a>
+      <button id="btnClearCase" class="btn">New / Clear Case</button>
+    </div>
+  </header>
+
+  <main class="case-flow-shell">
+
+    <section class="case-flow-hero">
+      <p class="hero-label">Guided Case Builder</p>
+
+      <h1 id="caseBuilderTitle">Vehicle Fire Investigation File</h1>
+
+      <p id="caseBuilderSubtitle">
+        Complete the questionnaire first, copy it, then continue down the page to build the full case file.
+      </p>
+
+      <div class="workflow-steps">
+        <div class="workflow-step">
+          <span>1</span>
+          Fill case information
+        </div>
+
+        <div class="workflow-step">
+          <span>2</span>
+          Copy questionnaire BBCode and post the casefile
+        </div>
+
+        <div class="workflow-step">
+          <span>3</span>
+          Build narrative and evidence
+        </div>
+
+        <div class="workflow-step">
+          <span>4</span>
+          Copy casefile content and post it as a different reply
+        </div>
+      </div>
+    </section>
+
+    <!-- QUESTIONNAIRE -->
+    <section class="flow-card">
+      <div class="flow-card-head">
+        <div>
+          <p class="step-kicker">Template 1</p>
+          <h2>Initial casefile details</h2>
+          <p>
+            Fill this part first. The preview underneath updates automatically and can be copied separately.
+          </p>
+        </div>
+      </div>
+
+      <div class="case-row2">
+        <div class="field">
+          <label for="caseNumber">Casefile Number</label>
+          <input id="caseNumber" type="text" placeholder="000" />
+          <p class="hint">
+            Enter the case number that will appear in the title, for example: <b>001</b>.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="caseName">Case Name</label>
+          <input id="caseName" type="text" placeholder="CASENAME" />
+          <p class="hint">
+            Enter the short case name, for example: <b>Little Bighorn Vehicle Fire</b>.
+          </p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fireDateTime">Date and Time of Fire</label>
+        <input id="fireDateTime" type="text" placeholder="DD/MMM/YYYY; HH:MM" />
+        <p class="hint">
+          Time will be that of the first emergency call, or that stated in the incident report of the LSFD.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fireLocation">Location of Fire</label>
+        <input id="fireLocation" type="text" placeholder="Property, Street, District, City" />
+        <p class="hint">
+          This will be that of the location of the buildings involved. If the fire spreads across multiple properties,
+          then this will be an approximation based on the location where resources are mobilised from.
+        </p>
+      </div>
+
+      <div class="field structure-only-field" id="assignedInvestigatorField">
+        <label for="assignedInvestigator">Assigned Investigator</label>
+        <input id="assignedInvestigator" type="text" placeholder="Firstname Lastname" />
+        <p class="hint">
+          This is used for Fire Investigation Logs / Structure Fire case files.
+        </p>
+      </div>
+
+      <div class="case-row2">
+        <div class="field">
+          <label for="leadInvestigator">Lead Investigator</label>
+          <input id="leadInvestigator" type="text" placeholder="Firstname Lastname" />
+        </div>
+
+        <div class="field">
+          <label for="otherInvestigators">Other Investigators</label>
+          <input id="otherInvestigators" type="text" placeholder="Firstname Lastname" />
+        </div>
+      </div>
+
+      <div class="case-row2">
+        <div class="field">
+          <label for="criminalProceedings">Criminal Proceedings</label>
+          <select id="criminalProceedings">
+            <option value="">Y/N</option>
+            <option value="Y">Y</option>
+            <option value="N">N</option>
+          </select>
+          <p class="hint">
+            Select <b>Y</b> or <b>N</b>. Select "Y" for going with Criminal Proceedings or "N", for not.”.
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="aptInvolved">APT Involved</label>
+          <select id="aptInvolved">
+            <option value="">Y/N</option>
+            <option value="Y">Y</option>
+            <option value="N">N</option>
+          </select>
+          <p class="hint">
+            Select <b>Y</b> or <b>N</b>. Select "Y” if APT was involved or "N"..
+          </p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="collabLink">Link to Collaborative Topic / Document</label>
+        <input id="collabLink" type="url" placeholder="https://..." />
+        <p class="hint">
+          Attach a link here to an accessible document which Marshals can view or edit,
+          or the forum post on which the investigation is being hosted.
+        </p>
+      </div>
+
+      <div class="output-block">
+        <div class="output-head clean-output-head">
+          <div>
+            <h2>Questionnaire BBCode Preview</h2>
+            <p>Copy and paste this first.</p>
+          </div>
+
+            <div class="output-actions">
+              <button id="btnGenerateQuestionnaire" class="btn" type="button">
+                Refresh Preview
+              </button>
+
+              <button id="btnCopyQuestionnaire" class="btn btn-primary" type="button">
+                Copy Questionnaire
+              </button>
+
+            <a
+              id="postCasefileBtn"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn btn-post"
+            >
+              Post the Casefile →
+            </a>
+
+        <textarea id="questionnaireOutput" class="bbcode-output smoother-output" readonly></textarea>
+      </div>
+    </section>
+
+    <!-- CASE FILE CONTENT -->
+    <section class="flow-card">
+      <div class="flow-card-head">
+        <div>
+          <p class="step-kicker">TEMPLATE 2</p>
+          <h2>Case File Content</h2>
+          <p>
+            Fill in the main case file. Evidence and persons of interest can be added as separate repeatable cards.
+          </p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="narrative">Narrative</label>
+        <textarea id="narrative" class="large-textarea" placeholder="Write a narrative in detail describing the situation, the narrative has to be written in third person."></textarea>
+        <p class="hint">
+          Write a narrative in detail describing the situation, the narrative has to be written in third person.
+        </p>
+      </div>
+
+      <div class="soft-divider"></div>
+
+      <div class="section-title-row">
+        <div>
+          <h2>Evidence / Exhibits</h2>
+          <p class="hint">
+            Add evidence related to the investigation. (Photos, CCTV footage, witness statements, etc.)
+          </p>
+        </div>
+
+        <button id="btnAddExhibit" class="btn small-btn" type="button">+ Add Exhibit</button>
+      </div>
+
+      <div id="exhibitList" class="dynamic-list"></div>
+
+      <div class="soft-divider"></div>
+
+      <div class="section-title-row">
+        <div>
+          <h2>Persons of Interest</h2>
+          <p class="hint">
+            Add a list of people involved in the investigation alongside their role in it and contact information. (Witness, victim, suspect, etc.)
+          </p>
+        </div>
+
+        <button id="btnAddPerson" class="btn small-btn" type="button">+ Add Person</button>
+      </div>
+
+      <div id="personList" class="dynamic-list"></div>
+
+      <div class="soft-divider"></div>
+
+      <div class="field">
+        <label for="conclusion">Conclusion</label>
+        <textarea id="conclusion" placeholder="Add a conclusion at the end of investigation."></textarea>
+      </div>
+
+      <div class="generate-row">
+        <button id="btnGenerateCaseFile" class="btn btn-primary" type="button">
+          Generate Case File BBCode
+        </button>
+      </div>
+
+      <div class="output-block">
+        <div class="output-head clean-output-head">
+          <div>
+            <h2>Case File BBCode Preview</h2>
+            <p>Copy and paste this after the questionnaire.</p>
+          </div>
+
+          <button id="btnCopyCaseFile" class="btn btn-primary" type="button">
+            Copy Case File
+          </button>
+        </div>
+
+        <textarea id="casefileOutput" class="bbcode-output smoother-output casefile-preview" readonly></textarea>
+      </div>
+
+      <p id="copyStatus" class="copy-status"></p>
+    </section>
+
+  </main>
+
+  <script src="case.js"></script>
+</body>
+</html>

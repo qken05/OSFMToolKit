@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SFM Toolkit</title>
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="home-page">
+
+  <!-- Background logo watermark -->
+  <img src="sanfire.png" alt="" class="home-logo-watermark" />
+
+  <div class="home-bg-glow glow-one"></div>
+  <div class="home-bg-glow glow-two"></div>
+
+  <main class="home-shell">
+
+    <nav class="home-nav">
+      <div class="brand-block">
+        <img src="sanfire.png" alt="San Fire Logo" class="brand-logo" />
+
+        <div>
+          <p class="brand-kicker">Office of State Fire Marshal</p>
+          <h1>SFM Toolkit</h1>
+        </div>
+      </div>
+
+      <div class="nav-pill">
+        developed by qken
+      </div>
+    </nav>
+
+    <section class="hero-card home-selector-card">
+
+      <div class="hero-content">
+        <p class="hero-label">Investigation Tools</p>
+
+        <h2>Select your document type.</h2>
+
+        <p class="hero-text">
+          Choose whether you want to create a visual APB crime alert or build a structured
+          case file in BBCode format.
+        </p>
+      </div>
+
+      <div class="home-logo-panel">
+        <img src="sanfire.png" alt="San Fire Logo" class="home-main-logo" />
+      </div>
+
+    </section>
+
+    <section class="tool-section">
+
+      <a href="apb.html" class="tool-card fancy-card">
+        <div class="tool-card-top">
+          <div class="tool-icon warning-icon">⚠️</div>
+          <span class="tool-tag">PNG Export</span>
+        </div>
+
+        <h3>APB Generator</h3>
+
+        <p>
+          Here you can create an All-Point Bulletin without the need of an editor tool.
+        </p>
+
+        <div class="tool-footer">
+          <span>Open APB Generator</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="#" id="openCaseTypeModal" class="tool-card fancy-card">
+        <div class="tool-card-top">
+          <div class="tool-icon case-icon">📁</div>
+          <span class="tool-tag">BBCode Output</span>
+        </div>
+
+        <h3>Case Builder</h3>
+
+        <p>
+          Here you can skip the editing of the BBCode and use this tool to just fill in the information and just copy and paste the BBCode.
+        </p>
+
+        <div class="tool-footer">
+          <span>Open Case Builder</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+    </section>
+
+    <footer class="home-footer">
+      <p>SFM Toolkit • APB Generator • Case Builder</p>
+    </footer>
+
+  </main>
+<div id="caseTypeModal" class="case-modal" aria-hidden="true">
+  <div class="case-modal-backdrop"></div>
+
+  <div class="case-modal-card">
+    <div class="case-modal-header">
+      <div>
+        <p class="hero-label">Case Builder</p>
+        <h2>Select investigation type</h2>
+        <p>
+          Select the type of casefile you want to do. Fire Investigations are usually for buildings and so. Whereas Vehicle Fire Investigation
+          is only for vehicles.
+        </p>
+      </div>
+
+      <button id="closeCaseTypeModal" class="modal-close-btn" type="button">×</button>
+    </div>
+
+    <div class="case-type-grid">
+      <a href="case.html?type=vehicle" class="case-type-card">
+        <div class="case-type-icon">🚗</div>
+        <h3>Vehicle Fire Investigation</h3>
+        <p>
+          Vehicle Fire Investigation Template
+        </p>
+        <span>Continue →</span>
+      </a>
+
+      <a href="case.html?type=structure" class="case-type-card">
+        <div class="case-type-icon">🏢</div>
+        <h3>Fire Investigation</h3>
+        <p>
+          Fire Investigation Template
+        </p>
+        <span>Continue →</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+  <script>
+    const openCaseTypeModal = document.getElementById("openCaseTypeModal");
+    const closeCaseTypeModal = document.getElementById("closeCaseTypeModal");
+    const caseTypeModal = document.getElementById("caseTypeModal");
+
+    function openModal() {
+      caseTypeModal.classList.add("is-open");
+      caseTypeModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal() {
+      caseTypeModal.classList.remove("is-open");
+      caseTypeModal.setAttribute("aria-hidden", "true");
+    }
+
+    openCaseTypeModal.addEventListener("click", function (event) {
+      event.preventDefault();
+      openModal();
+    });
+
+    closeCaseTypeModal.addEventListener("click", closeModal);
+
+    caseTypeModal.addEventListener("click", function (event) {
+      if (
+        event.target.classList.contains("case-modal-backdrop") ||
+        event.target === caseTypeModal
+      ) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+  </script>
+</body>
+</html>
